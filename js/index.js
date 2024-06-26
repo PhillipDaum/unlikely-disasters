@@ -1,6 +1,23 @@
-let poundTheEarth = []
+const poundTheEarth = []
 
-for (item of asteroidData.near_earth_objects["2015-09-08"]) {
+/// today in YYYY-MM-DD
+const dateHowTheyLikeIt =  new Date().toISOString().split("T")[0];
+const correctURL = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${dateHowTheyLikeIt}&end_date=${dateHowTheyLikeIt}&api_key=YFd2rMGO2R7KJipZ2lXdYqMP2dsmq3pWKEOz9NXQ`;
+console.log(correctURL);
+
+const dateHowTheyLikeItWithQuotes = `"${dateHowTheyLikeIt}"`
+
+
+const asteroidData = async () => {
+    const response = await fetch(correctURL);
+    const myJson = await response.json(); //extract JSON from the http response
+    // do something with myJson
+  }
+  console.log(dateHowTheyLikeItWithQuotes)
+  console.log(asteroidData)
+
+
+for (item of asteroidData.near_earth_objects[dateHowTheyLikeItWithQuotes]) {
 	if (item.is_potentially_hazardous_asteroid === true) {
 		poundTheEarth.push(item);
 	}
@@ -9,20 +26,20 @@ for (item of asteroidData.near_earth_objects["2015-09-08"]) {
 function astroidSpeed () {
 	let identifier = this.id;
 	let travelSpeed =
-		asteroidData.near_earth_objects["2015-09-08"][identifier]
+		asteroidData.near_earth_objects[dateHowTheyLikeItWithQuotes][identifier]
 			.close_approach_data[0].relative_velocity.miles_per_hour;
 	this.innerHTML = `traveling @ ${Math.ceil(travelSpeed).toLocaleString()} mph`;
 };
 
 function unAstroidSpeed () {
 	let identifier = this.id;
-	let originalInfo = asteroidData.near_earth_objects["2015-09-08"][identifier].name
+	let originalInfo = asteroidData.near_earth_objects[dateHowTheyLikeItWithQuotes][identifier].name
 	this.innerHTML = `${originalInfo}`;
 };
 
 function willItHitEarth () {
 	let identifier = this.id;
-	let howMuchMiss = asteroidData.near_earth_objects["2015-09-08"][identifier].close_approach_data[0].miss_distance.miles;;
+	let howMuchMiss = asteroidData.near_earth_objects[dateHowTheyLikeItWithQuotes][identifier].close_approach_data[0].miss_distance.miles;;
 	this.innerHTML = `expected to miss Earth by:${Math.ceil(howMuchMiss).toLocaleString()} miles`;
 };
 
