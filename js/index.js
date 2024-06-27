@@ -3,7 +3,6 @@ const poundTheEarth = []
 /// today in YYYY-MM-DD
 const dateHowTheyLikeIt =  new Date().toISOString().split("T")[0];
 const correctURL = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${dateHowTheyLikeIt}&end_date=${dateHowTheyLikeIt}&api_key=YFd2rMGO2R7KJipZ2lXdYqMP2dsmq3pWKEOz9NXQ`;
-console.log(correctURL);
 
 const dateHowTheyLikeItWithQuotes = `"${dateHowTheyLikeIt}"`
 
@@ -12,16 +11,18 @@ const asteroidData = async () => {
     const response = await fetch(correctURL);
     const myJson = await response.json(); //extract JSON from the http response
     // do something with myJson
+	console.log(myJson, "myJson")
+	// maybe I just need to put an output here!? 
   }
   console.log(dateHowTheyLikeItWithQuotes)
   console.log(asteroidData)
 
-
-for (item of asteroidData.near_earth_objects[dateHowTheyLikeItWithQuotes]) {
-	if (item.is_potentially_hazardous_asteroid === true) {
-		poundTheEarth.push(item);
-	}
-}
+  asteroidData()
+// for (item of asteroidData.near_earth_objects[dateHowTheyLikeItWithQuotes]) {
+// 	if (item.is_potentially_hazardous_asteroid === true) {
+// 		poundTheEarth.push(item);
+// 	}
+// }
 
 function astroidSpeed () {
 	let identifier = this.id;
