@@ -1,46 +1,40 @@
 const poundTheEarth = []
-
+let asteroidData;
 /// today in YYYY-MM-DD
-const dateHowTheyLikeIt =  new Date().toISOString().split("T")[0];
+const dateHowTheyLikeIt = new Date().toISOString().split("T")[0];
 const correctURL = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${dateHowTheyLikeIt}&end_date=${dateHowTheyLikeIt}&api_key=YFd2rMGO2R7KJipZ2lXdYqMP2dsmq3pWKEOz9NXQ`;
 
-const dateHowTheyLikeItWithQuotes = `"${dateHowTheyLikeIt}"`
+const getThatData = async () => {
+	const response = await fetch(correctURL);
+	asteroidData = await response.json(); //extract JSON from the http response
+	// do something with myJson
+	for (item of asteroidData.near_earth_objects[dateHowTheyLikeIt]) {
+		if (item.is_potentially_hazardous_asteroid === true) {
+			poundTheEarth.push(item);
+		}
+	}
+}
+getThatData();
 
+console.log(poundTheEarth, "BIG THING")
 
-const asteroidData = async () => {
-    const response = await fetch(correctURL);
-    const myJson = await response.json(); //extract JSON from the http response
-    // do something with myJson
-	console.log(myJson, "myJson")
-	// maybe I just need to put an output here!? 
-  }
-  console.log(dateHowTheyLikeItWithQuotes)
-  console.log(asteroidData)
-
-  asteroidData()
-// for (item of asteroidData.near_earth_objects[dateHowTheyLikeItWithQuotes]) {
-// 	if (item.is_potentially_hazardous_asteroid === true) {
-// 		poundTheEarth.push(item);
-// 	}
-// }
-
-function astroidSpeed () {
+function astroidSpeed() {
 	let identifier = this.id;
 	let travelSpeed =
-		asteroidData.near_earth_objects[dateHowTheyLikeItWithQuotes][identifier]
+		asteroidData.near_earth_objects.dateHowTheyLikeIt[identifier]
 			.close_approach_data[0].relative_velocity.miles_per_hour;
 	this.innerHTML = `traveling @ ${Math.ceil(travelSpeed).toLocaleString()} mph`;
 };
 
-function unAstroidSpeed () {
+function unAstroidSpeed() {
 	let identifier = this.id;
-	let originalInfo = asteroidData.near_earth_objects[dateHowTheyLikeItWithQuotes][identifier].name
+	let originalInfo = asteroidData.near_earth_objects.dateHowTheyLikeIt[identifier].name
 	this.innerHTML = `${originalInfo}`;
 };
 
-function willItHitEarth () {
+function willItHitEarth() {
 	let identifier = this.id;
-	let howMuchMiss = asteroidData.near_earth_objects[dateHowTheyLikeItWithQuotes][identifier].close_approach_data[0].miss_distance.miles;;
+	let howMuchMiss = asteroidData.near_earth_objects.dateHowTheyLikeIt[identifier].close_approach_data[0].miss_distance.miles;;
 	this.innerHTML = `expected to miss Earth by:${Math.ceil(howMuchMiss).toLocaleString()} miles`;
 };
 
